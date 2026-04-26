@@ -1,20 +1,16 @@
-import express = require("express");
-import dotenv = require("dotenv");
-import cors = require("cors");
-import type { Request, Response } from "express";
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import staffRouter from "./routes/staff.routes.ts";
+import connectDB from "./config/db.ts";
 
 dotenv.config();
-
-const { connectDB } = require("./config/db");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
-});
+app.use("/api/staff", staffRouter);
 
 const PORT = process.env.PORT || 5000;
 
