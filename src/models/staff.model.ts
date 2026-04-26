@@ -12,11 +12,13 @@ const StaffModel = new mongoose.Schema<StaffFormData>({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     phone: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },   
     shift: {
         type: String,
@@ -37,7 +39,8 @@ const StaffModel = new mongoose.Schema<StaffFormData>({
     status: {
         type: String,
         required: true,
-        default: "active"
+        default: "active",
+        enum: ["active", "inactive", "onleave"]
     },
     specialization: {
         type: String,
