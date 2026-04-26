@@ -15,13 +15,35 @@ staffRouter.get(
   authorizeRoles("admin"),
   staffListCreateController.getStaff,
 );
-staffRouter.post("/", staffListCreateController.saveStaff);
-staffRouter.get("/:id", staffListUpdateController.getStaffMember);
-staffRouter.put("/:id", staffListUpdateController.editStaffMember);
+staffRouter.post(
+  "/",
+  protect,
+  authorizeRoles("admin"),
+  staffListCreateController.saveStaff,
+);
+staffRouter.get(
+  "/:id",
+  protect,
+  authorizeRoles("admin"),
+  staffListUpdateController.getStaffMember,
+);
+staffRouter.put(
+  "/:id",
+  protect,
+  authorizeRoles("admin"),
+  staffListUpdateController.editStaffMember,
+);
 staffRouter.patch(
   "/inactive/:id",
+  protect,
+  authorizeRoles("admin"),
   staffListUpdateController.inactivateStaffMember,
 );
-staffRouter.patch("/active/:id", staffListUpdateController.activateStaffMember);
+staffRouter.patch(
+  "/active/:id",
+  protect,
+  authorizeRoles("admin"),
+  staffListUpdateController.activateStaffMember,
+);
 
 export default staffRouter;

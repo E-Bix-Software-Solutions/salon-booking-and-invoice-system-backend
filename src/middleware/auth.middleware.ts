@@ -80,7 +80,6 @@ export const authorizeRoles = (...roles: string[]) => {
       });
       return;
     }
-
     next();
   };
 };
