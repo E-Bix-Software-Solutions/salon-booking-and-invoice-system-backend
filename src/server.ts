@@ -14,6 +14,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req: express.Request, res: express.Response) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is running",
+  });
+})
 app.use("/api/auth", authRouter);
 app.use("/api/staff", staffRouter);
 app.use("/api/upload", uploadRouter);
