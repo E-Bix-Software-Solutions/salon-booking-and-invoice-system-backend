@@ -1,11 +1,13 @@
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.ts";
+import logger from "../config/logger.ts";
 
 const generateToken = (id: string, email: string, role: string): string => {
   const JWT_SECRET = process.env.JWT_SECRET;
 
   if (!JWT_SECRET) {
+    logger.error("JWT_SECRET is missing in .env file");
     throw new Error("JWT_SECRET is missing in .env file");
   }
 
@@ -72,6 +74,7 @@ export const registerUser = async (
       },
     });
   } catch (error) {
+    logger.error(error);
     res.status(500).json({
       success: false,
       message: "Registration failed",
@@ -133,6 +136,7 @@ export const loginUser = async (
       },
     });
   } catch (error) {
+    logger.error(error);
     res.status(500).json({
       success: false,
       message: "Login failed",

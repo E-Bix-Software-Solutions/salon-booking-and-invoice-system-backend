@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.ts";
+import logger from "../config/logger.ts";
 
 declare global {
   namespace Express {
@@ -41,6 +42,7 @@ export const protect = async (
     const JWT_SECRET = process.env.JWT_SECRET;
 
     if (!JWT_SECRET) {
+      logger.error("JWT_SECRET is missing in .env file");
       throw new Error("JWT_SECRET is missing in .env file");
     }
 

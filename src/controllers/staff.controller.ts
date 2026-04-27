@@ -1,5 +1,6 @@
 import type { Request, NextFunction, Response } from "express";
 import Staff from "../models/staff.model.ts";
+import logger from "../config/logger.ts";
 
 class StaffListCreateController {
   getStaff = async (req: Request, res: Response) => {
@@ -7,6 +8,7 @@ class StaffListCreateController {
       const staff = await Staff.find();
       return res.status(200).send(staff);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send(error);
     }
   };
@@ -16,6 +18,7 @@ class StaffListCreateController {
       const staff = await Staff.create(req.body);
       return res.status(200).send(staff);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send(error);
     }
   };
@@ -27,6 +30,7 @@ class StaffListUpdateController {
       const staff = await Staff.findByIdAndUpdate(req.params.id, req.body);
       return res.status(200).send(staff);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send(error);
     }
   };
@@ -38,6 +42,7 @@ class StaffListUpdateController {
       }, { new: true });
       return res.status(200).send(staff);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send(error);
     }
   };
@@ -49,6 +54,7 @@ class StaffListUpdateController {
       }, { new: true });
       return res.status(200).send(staff);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send(error);
     }
   };
@@ -58,6 +64,7 @@ class StaffListUpdateController {
       const staff = await Staff.findById(req.params.id);
       return res.status(200).send(staff);
     } catch (error) {
+      logger.error(error);
       return res.status(500).send(error);
     }
   };
