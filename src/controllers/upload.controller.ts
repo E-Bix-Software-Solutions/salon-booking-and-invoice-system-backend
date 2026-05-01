@@ -32,6 +32,7 @@ export const uploadSingleImage = async (
   res: Response
 ): Promise<void> => {
   try {
+    logger.info("Received file upload request", req.file);
     if (!req.file) {
       res.status(400).json({
         success: false,

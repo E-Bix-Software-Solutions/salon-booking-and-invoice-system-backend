@@ -2,16 +2,25 @@ import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 
 export interface IUser extends Document {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   role: "admin" | "staff" | "customer";
+  imageUrl: string;
+  publicId: string;
   comparePassword: (password: string) => Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>(
   {
-    fullName: {
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    lastName: {
       type: String,
       required: true,
       trim: true,
@@ -37,6 +46,16 @@ const userSchema = new Schema<IUser>(
       enum: ["admin", "staff", "customer"],
       default: "customer",
     },
+
+    imageUrl: {
+      type: String,
+      default: "",
+    },
+
+    publicId: {
+      type: String,
+      default: "",
+    }
   },
   {
     timestamps: true,

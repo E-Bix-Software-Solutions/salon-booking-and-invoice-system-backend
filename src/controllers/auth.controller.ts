@@ -20,18 +20,18 @@ const generateToken = (id: string, email: string, role: string): string => {
     JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRES_IN || "7d",
-    }
+    },
   );
 };
 
 export const registerUser = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    const { fullName, email, password, role } = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
 
-    if (!fullName || !email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       res.status(400).json({
         success: false,
         message: "Full name, email and password are required",
@@ -50,17 +50,14 @@ export const registerUser = async (
     }
 
     const user = await User.create({
-      fullName,
+      firstName,
+      lastName,
       email,
       password,
       role,
     });
 
-    const token = generateToken(
-      user._id.toString(),
-      user.email,
-      user.role
-    );
+    const token = generateToken(user._id.toString(), user.email, user.role);
 
     res.status(201).json({
       success: true,
@@ -68,7 +65,8 @@ export const registerUser = async (
       token,
       data: {
         id: user._id,
-        fullName: user.fullName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         role: user.role,
       },
@@ -83,10 +81,7 @@ export const registerUser = async (
   }
 };
 
-export const loginUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
@@ -118,11 +113,14 @@ export const loginUser = async (
       return;
     }
 
-    const token = generateToken(
-      user._id.toString(),
-      user.email,
-      user.role
-    );
+    const token = generateToken(user._id.toString(), user.email, user.role);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({
       success: true,
@@ -130,7 +128,8 @@ export const loginUser = async (
       token,
       data: {
         id: user._id,
-        fullName: user.fullName,
+        firstName: user.firstName,
+        lastNmae: user.lastName,
         email: user.email,
         role: user.role,
       },
@@ -144,3 +143,25 @@ export const loginUser = async (
     });
   }
 };
+
+export const logoutUser = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    res.clearCookie("token");
+    res.status(200).json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed",
+      error,
+    });
+  }
+};
+
+

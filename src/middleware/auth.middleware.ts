@@ -27,17 +27,29 @@ export const protect = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const authHeader = req.headers.authorization;
+    let token: string | undefined;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    // 1. Get token from HTTP-only cookie
+    if (req.cookies?.token) {
+      token = req.cookies.token;
+    }
+
+    // 2. Or get token from Authorization header
+    if (
+      !token &&
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+
+    if (!token) {
       res.status(401).json({
         success: false,
         message: "No token provided",
       });
       return;
     }
-
-    const token = authHeader.split(" ")[1];
 
     const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -66,6 +78,8 @@ export const protect = async (
 
     next();
   } catch (error) {
+    logger.error(error);
+
     res.status(401).json({
       success: false,
       message: "Invalid or expired token",
