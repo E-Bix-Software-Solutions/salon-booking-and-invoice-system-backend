@@ -17,5 +17,6 @@ export type StaffFormData = {
   status: Status[keyof Status];
   specialization: string;
   imageUrl: string;
+  publicId: string;
   notes: string;
 };
