@@ -1,11 +1,10 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import staffRouter from "./routes/staff.routes.ts";
 import connectDB from "./config/db.ts";
-import authRouter from "./routes/auth.routes.ts";
-import uploadRouter from "./routes/upload.routes.ts";
 import { configureCloudinary } from "./config/cloudinary.ts";
+import { errorHandler } from "./middleware/errorHandler.middleware.ts";
+import Rootroutes from "./routes";
 
 dotenv.config();
 
@@ -19,12 +18,12 @@ app.get("/", (req: express.Request, res: express.Response) => {
     success: true,
     message: "Server is running",
   });
-})
-app.use("/api/auth", authRouter);
-app.use("/api/staff", staffRouter);
-app.use("/api/upload", uploadRouter);
+});
+app.use("/api" , Rootroutes)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
+
 
 const startServer = async () => {
   await connectDB();
