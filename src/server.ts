@@ -8,6 +8,7 @@ import authRouter from "./routes/auth.routes.ts";
 import uploadRouter from "./routes/upload.routes.ts";
 import userRouter from "./routes/user.routes.ts";
 import { configureCloudinary } from "./config/cloudinary.ts";
+import invoiceRouter from "./routes/invoice.routes.ts";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/staff", staffRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/user", userRouter);
+app.use("/api/invoice", invoiceRouter);
 
 const PORT = process.env.PORT || 5000;
 
