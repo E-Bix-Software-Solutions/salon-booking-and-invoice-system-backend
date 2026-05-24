@@ -1,13 +1,14 @@
-export type CustomerType = {
+export type CustomerFormData = {
   fullName: string;
-  email?: string;
+  email: string;
   phone: string;
-  address?: string;
-  gender?: "Male" | "Female" | "Other";
-  dateOfBirth?: Date | string;
-  joinDate?: Date | string;
-  loyaltyLevel?: "Bronze" | "Silver" | "Gold" | "Platinum";
-  status?: "Active" | "Inactive";
-  preferredService?: string;
-  imageUrl?: string;
-}
+  gender: string;
+  dateOfBirth: string;
+  address: string;
+  joinDate: string;
+  loyaltyLevel: string;
+  status: string;
+  preferredService: string;
+  imageUrl: string;
+  notes: string;
+};

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import type { StaffFormData } from "../types/staff";
+import type { StaffFormData } from "../types/staff.ts";
 
 const StaffModel = new mongoose.Schema<StaffFormData>({
     fullName: {
@@ -47,6 +47,10 @@ const StaffModel = new mongoose.Schema<StaffFormData>({
         required: false
     },
     imageUrl: {
+        type: String,
+        required: false
+    },
+    publicId: {
         type: String,
         required: false
     },
