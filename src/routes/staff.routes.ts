@@ -45,5 +45,11 @@ staffRouter.patch(
   authorizeRoles("admin"),
   staffListUpdateController.activateStaffMember,
 );
+staffRouter.delete(
+  "/:id",
+  protect,
+  authorizeRoles("admin"),
+  staffListUpdateController.deleteStaffMember,
+);
 
 export default staffRouter;

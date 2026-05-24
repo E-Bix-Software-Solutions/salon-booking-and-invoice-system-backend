@@ -68,6 +68,16 @@ class StaffListUpdateController {
       return res.status(500).send(error);
     }
   };
+
+  deleteStaffMember = async (req: Request, res: Response) => {
+    try {
+      const staff = await Staff.findByIdAndDelete(req.params.id);
+      return res.status(200).send(staff);
+    } catch (error) {
+      logger.error(error);
+      return res.status(500).send(error);
+    }
+  };
 }
 
 export { StaffListCreateController, StaffListUpdateController };
