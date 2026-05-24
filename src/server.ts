@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.ts";
 import { configureCloudinary } from "./config/cloudinary.ts";
 import { errorHandler } from "./middleware/errorHandler.middleware.ts";
-import Rootroutes from "./routes";
+import Rootrouter from "./routes/index.ts";
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
     message: "Server is running",
   });
 });
-app.use("/api" , Rootroutes)
+app.use("/api" , Rootrouter)
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

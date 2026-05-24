@@ -1,8 +1,8 @@
 import { Router } from "express";
-import authRouter from "./auth.routes";
-import customerRouter from "./customer.routes";
-import staffRouter from "./staff.routes";
-import uploadRouter from "./upload.routes";
+import authRouter from "./auth.routes.ts";
+import customerRouter from "./customer.routes.ts";
+import staffRouter from "./staff.routes.ts";
+import uploadRouter from "./upload.routes.ts";
 
 
 const Rootrouter = Router();
