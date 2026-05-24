@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import type { StaffFormData } from "../../types/staff.ts";
+import type { StaffFormData } from "../types/staff";
 
 const StaffModel = new mongoose.Schema<StaffFormData>({
     fullName: {
