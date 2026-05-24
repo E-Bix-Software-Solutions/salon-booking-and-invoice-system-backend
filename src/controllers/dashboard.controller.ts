@@ -68,7 +68,7 @@ export const getDashboardAnalytics = async (
           shiftDistribution: [
             {
               $match: {
-                shift: { $ne: null, $ne: "" }
+                shift: { $nin: [null, ""] }
               }
             },
             {
@@ -88,7 +88,7 @@ export const getDashboardAnalytics = async (
           roleDistribution: [
             {
               $match: {
-                role: { $ne: null, $ne: "" }
+                role: { $nin: [null, ""] }
               }
             },
             {
