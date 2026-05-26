@@ -20,3 +20,4 @@
 {"level":"info","message":"Configuring Cloudinary..."}
 {"level":"info","message":"Configuring Cloudinary..."}
 {"level":"info","message":"Fetching dashboard analytics via parallel MongoDB aggregation pipelines..."}
+{"level":"info","message":"Configuring Cloudinary..."}
