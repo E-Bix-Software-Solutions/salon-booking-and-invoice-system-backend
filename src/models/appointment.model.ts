@@ -7,7 +7,7 @@ const AppointmentSchema = new Schema<IAppointmentDocument>(
   {
     customer: {
       type: Schema.Types.ObjectId,
-      ref: "Customer",
+      ref: "customer",
       required: true,
     },
     staff: {
