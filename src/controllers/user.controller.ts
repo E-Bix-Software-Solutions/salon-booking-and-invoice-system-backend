@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import type { Request, Response } from "express";
+import bcrypt from "bcryptjs";
 import User from "../models/user.model.ts";
 import logger from "../config/logger.ts";
 import { cloudinary } from "../config/cloudinary.ts";
@@ -168,4 +169,116 @@ export const updateUser = async (
         error: error.message,
       });
     });
-}
+};
+
+export const getSecuritySettings = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+      return;
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        twoFactorAuth: false,
+        role: user.role,
+        createdAt: (user as any).createdAt,
+        lastLogin: (user as any).updatedAt || new Date(),
+      },
+    });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get security settings",
+      error,
+    });
+  }
+};
+
+export const updatePassword = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+      return;
+    }
+
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+      return;
+    }
+
+    const user = await User.findById(req.user.id).select("+password");
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+      return;
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid current password",
+      });
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      res.status(400).json({
+        success: false,
+        message: "New passwords do not match",
+      });
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long",
+      });
+      return;
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error: any) {
+    logger.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update password",
+      error: error.message,
+    });
+  }
+};
