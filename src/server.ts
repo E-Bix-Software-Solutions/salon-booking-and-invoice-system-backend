@@ -36,6 +36,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/staff", staffRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 app.use("/api/invoice", invoiceRouter);
 app.use("/api/appointments", appointmentRouter);
 app.use("/api", Rootrouter);
